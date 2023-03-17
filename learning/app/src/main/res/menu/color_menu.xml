@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/redCamera"
+        android:icon="@drawable/camera_red"
+        android:title="Red Camera" />
+    <item
+        android:id="@+id/yellowCamera"
+        android:icon="@drawable/camera_yellow"
+        android:title="Yellow Camera" />
+    <item
+        android:id="@+id/blueCamera"
+        android:icon="@drawable/camera_blue"
+        android:title="Blue Camera" />
+</menu>
