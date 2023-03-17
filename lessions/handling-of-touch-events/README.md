@@ -35,7 +35,11 @@ public boolean onTouchEvent(MotionEvent event) {
 }
 ```
 
-In this example, we create a custom _MyGestureListener_ class that extends _GestureDetector.SimpleOnGestureListener_. We override the _onSingleTapConfirmed_ method to handle the single tap gesture. We then create a _GestureDetector_ object and pass it our _MyGestureListener_ object. Finally, we override the _onTouchEvent_ method of our View to pass the touch events to the _GestureDetector_ object. The _GestureDetector_ object will then call the _onSingleTapConfirmed_ method of our _MyGestureListener_ object when a single tap gesture is detected.
+- In this example, we create a custom _MyGestureListener_ class that extends _GestureDetector.SimpleOnGestureListener_.
+- We override the _onSingleTapConfirmed_ method to handle the single tap gesture. 
+- We then create a _GestureDetector_ object and pass it our _MyGestureListener_ object. 
+- Finally, we override the _onTouchEvent_ method of our View to pass the touch events to the _GestureDetector_ object. 
+- The _GestureDetector_ object will then call the _onSingleTapConfirmed_ method of our _MyGestureListener_ object when a single tap gesture is detected.
 
 ## The most commonly used methods to handle touch events in Android Java
 
