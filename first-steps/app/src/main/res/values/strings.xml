@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ktra1</string>
+    <string name="app_name">first-steps</string>
 
     <string-array name="country">
         <item>Vietnam</item>
