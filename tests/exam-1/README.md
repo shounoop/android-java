@@ -3,4 +3,4 @@ Cho đối tượng dự án gồm: tên dự án, từ ngày, đến ngày (đ�
 Tạo app để thêm, sửa, xóa và tìm kiếm dữ án.
 
 Layout cho item dự án, thiết kế có dạng như hình dưới:
-![item](/assets/images/test-1.png "This is a image.")
+![item](/assets/exam-1.png "This is a image.")
