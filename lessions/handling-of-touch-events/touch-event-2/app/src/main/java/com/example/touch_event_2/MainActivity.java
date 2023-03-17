@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        this.gestureDetector.onTouchEvent(motionEvent);
-        return true;
+        return this.gestureDetector.onTouchEvent(motionEvent);
     }
 }
