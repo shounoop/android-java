@@ -12,6 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "view-pager-and-tab-layout"
-include ':app'
+rootProject.name = "view-pager-vs-tab-layout-2"
 include ':app'
