@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.view_pager_vs_tab_layout_2.MainActivity;
 import com.example.view_pager_vs_tab_layout_2.R;
 import com.example.view_pager_vs_tab_layout_2.model.Player;
 import com.example.view_pager_vs_tab_layout_2.model.PlayerItemListener;
@@ -22,8 +23,10 @@ import java.util.List;
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder> {
     private List<Player> players;
     private PlayerItemListener playerItemListener;
+    private MainActivity mainActivity;
 
-    public PlayerAdapter() {
+    public PlayerAdapter(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
         this.players = new ArrayList<>();
     }
 
@@ -41,11 +44,13 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
     public void add(Player player) {
         this.players.add(player);
+        this.mainActivity.players = this.players;
         notifyDataSetChanged();
     }
 
-    public  void update(int position, Player player) {
+    public void update(int position, Player player) {
         this.players.set(position, player);
+        this.mainActivity.players = this.players;
         notifyDataSetChanged();
     }
 
@@ -59,6 +64,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     @Override
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
         Player player = this.players.get(position);
+
         holder.avatar.setImageResource(player.getAvatar());
         holder.name.setText(player.getName());
         holder.price.setText("" + player.getPrice());
@@ -68,6 +74,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
                 builder.setTitle("Thong bao xoa");
                 builder.setMessage("Ban co chac chan xoa " + player.getName() + " nay khong?");
                 builder.setIcon(R.drawable.ic_remove);
@@ -77,6 +84,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                     public void onClick(DialogInterface dialogInterface, int i) {
                         players.remove(holder.getAdapterPosition());
                         notifyDataSetChanged();
+                        mainActivity.players = players;
                     }
                 });
 
@@ -116,10 +124,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
         private void initView(View view) {
             this.avatar = view.findViewById(R.id.item_img);
-            this.name = view.findViewById(R.id.editName);
-            this.price = view.findViewById(R.id.editPrice);
-            this.description = view.findViewById(R.id.editDesc);
+            this.name = view.findViewById(R.id.item_name);
+            this.price = view.findViewById(R.id.item_price);
+            this.description = view.findViewById(R.id.item_desc);
             this.deleteBtn = view.findViewById(R.id.item_remove);
+
+            this.deleteBtn.setOnClickListener(this);
         }
 
         @Override

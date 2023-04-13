@@ -2,14 +2,14 @@ package com.example.view_pager_vs_tab_layout_2.model;
 
 public class Player {
     private int avatar;
-    private int name;
+    private String name;
     private double price;
     private String description;
 
     public Player() {
     }
 
-    public Player(int avatar, int name, double price, String description) {
+    public Player(int avatar, String name, double price, String description) {
         this.avatar = avatar;
         this.name = name;
         this.price = price;
@@ -24,11 +24,11 @@ public class Player {
         this.avatar = avatar;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
