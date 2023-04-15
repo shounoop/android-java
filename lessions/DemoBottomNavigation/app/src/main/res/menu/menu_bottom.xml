@@ -10,6 +10,8 @@
         android:icon="@drawable/ic_notifications"
         android:title="Notification" />
 
+    <item android:title=""/>
+
     <item
         android:id="@+id/mSearch"
         android:icon="@drawable/ic_search"

@@ -23,16 +23,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                return new FragmentHome();
             case 1:
                 return new FragmentNotification();
-            case 2:
-                return new FragmentSearch();
             case 3:
+                return new FragmentSearch();
+            case 4:
                 return new FragmentCafe();
             default:
-                return null;
+                return new FragmentHome();
         }
     }
 

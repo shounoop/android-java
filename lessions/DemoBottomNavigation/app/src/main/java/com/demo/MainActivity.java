@@ -6,13 +6,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.demo.adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
+    private FloatingActionButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = findViewById(R.id.viewPager);
         navigationView = findViewById(R.id.navigation);
+        button = findViewById(R.id.fab);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), 4);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_SHORT);
+            }
+        });
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), 5);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -32,18 +44,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                System.out.println(position);
                 switch (position) {
-                    case 0:
-                        navigationView.getMenu().findItem(R.id.mHome).setCheckable(true);
-                        break;
                     case 1:
                         navigationView.getMenu().findItem(R.id.mNoti).setCheckable(true);
                         break;
-                    case 2:
+                    case 3:
                         navigationView.getMenu().findItem(R.id.mSearch).setCheckable(true);
                         break;
-                    case 3:
+                    case 4:
                         navigationView.getMenu().findItem(R.id.mCafe).setCheckable(true);
+                        break;
+                    default:
+                        navigationView.getMenu().findItem(R.id.mHome).setCheckable(true);
                         break;
                 }
             }
@@ -58,17 +71,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.mHome:
-                        viewPager.setCurrentItem(0);
-                        break;
                     case R.id.mNoti:
                         viewPager.setCurrentItem(1);
                         break;
                     case R.id.mSearch:
-                        viewPager.setCurrentItem(2);
+                        viewPager.setCurrentItem(3);
                         break;
                     case R.id.mCafe:
-                        viewPager.setCurrentItem(3);
+                        viewPager.setCurrentItem(4);
+                        break;
+                    default:
+                        viewPager.setCurrentItem(0);
                         break;
                 }
 
