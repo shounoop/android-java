@@ -49,7 +49,6 @@ public class SecondActivity extends AppCompatActivity {
         this.tvST.setText("Name: " + s.getName() + ", age: " + s.getAge());
         this.img.setImageResource(s.getImg());
         this.tvList.setText(tt);
-
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
