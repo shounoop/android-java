@@ -1,0 +1,74 @@
+package com.example.sqlite.dal;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+
+import com.example.sqlite.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SQLiteHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "ChiTieu.db";
+    private static int DATABASE_VERSION = 1;
+
+    public SQLiteHelper(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase database) {
+        String sql = "CREATE TABLE items(" + "id INTEGER PRIMARY KEY AUTOINCREMENT," + "title TEXT," + "category TEXT," + "price TEXT," + "date TEXT)";
+
+        database.execSQL(sql);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase database, int i, int i1) {
+
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+    }
+
+    // get all items sorted in descending order by date
+    public List<Item> getAll() {
+        List<Item> list = new ArrayList<>();
+
+        SQLiteDatabase database = getReadableDatabase();
+        String orderBy = "date DESC";
+
+        Cursor cursor = database.query("items", null, null, null, null, null, orderBy);
+
+        while (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String category = cursor.getString(2);
+            String price = cursor.getString(3);
+            String date = cursor.getString(4);
+
+            list.add(new Item(id, title, category, price, date));
+        }
+
+        return list;
+    }
+
+    // insert item
+    public long addItem(Item item) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", item.getTitle());
+        contentValues.put("category", item.getCategory());
+        contentValues.put("price", item.getPrice());
+        contentValues.put("date", item.getDate());
+
+        SQLiteDatabase database=getWritableDatabase();
+        return database.insert("items", null, contentValues);
+    }
+}
