@@ -41,12 +41,6 @@ public class FragmentHistory extends Fragment implements ItemListener {
         this.adapter = new RecycleViewAdapter();
         this.sqLiteHelper = new SQLiteHelper(getContext());
 
-        Item item = new Item(1, "Mua quan ao", "Mua sam", "500", "14/07/2001");
-        this.sqLiteHelper.addItem(item);
-
-        List<Item> list = this.sqLiteHelper.getAll();
-        this.adapter.setList(list);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         this.recyclerView.setLayoutManager(linearLayoutManager);
         this.recyclerView.setAdapter(this.adapter);
