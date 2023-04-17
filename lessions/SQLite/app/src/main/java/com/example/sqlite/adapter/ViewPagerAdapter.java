@@ -10,6 +10,8 @@ import com.example.sqlite.fragment.FragmentHome;
 import com.example.sqlite.fragment.FragmentSearch;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private final int FRAGMENT_NUMBER = 3;
+
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
@@ -29,6 +31,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return this.FRAGMENT_NUMBER;
     }
 }

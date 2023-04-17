@@ -15,30 +15,40 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView navigationView;
+    private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
-    private FloatingActionButton fab;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigationView = findViewById(R.id.bottom_nav);
-        viewPager = findViewById(R.id.viewPager);
-        fab = findViewById(R.id.fab);
+        this.initView();
+        this.initAdapter();
+        this.catchEvent();
+    }
 
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void initView() {
+        this.bottomNavigationView = findViewById(R.id.bottom_nav);
+        this.viewPager = findViewById(R.id.viewPager);
+        this.floatingActionButton = findViewById(R.id.fab);
+    }
+
+    private void initAdapter() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        this.viewPager.setAdapter(adapter);
+    }
+
+    private void catchEvent() {
+        this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "test", Toast.LENGTH_SHORT);
             }
         });
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPager.setAdapter(adapter);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        this.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -48,15 +58,15 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        navigationView.getMenu().findItem(R.id.mHome).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mHome).setChecked(true);
                         break;
 
                     case 1:
-                        navigationView.getMenu().findItem(R.id.mHistory).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mHistory).setChecked(true);
                         break;
 
                     case 2:
-                        navigationView.getMenu().findItem(R.id.mSearch).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.mSearch).setChecked(true);
                         break;
                 }
             }
@@ -67,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        this.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
