@@ -119,4 +119,73 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         return list;
     }
+
+    public List<Item> getItemsByTitle(String key) {
+        List<Item> list = new ArrayList<>();
+
+        String whereClause = "title like ?";
+        String[] whereArgs = {"%" + key + "%"};
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        Cursor cursor = database.query("items", null, whereClause, whereArgs, null, null, null);
+
+        while (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String category = cursor.getString(2);
+            String price = cursor.getString(3);
+            String date = cursor.getString(4);
+
+            list.add(new Item(id, title, category, price, date));
+        }
+
+        return list;
+    }
+
+    public List<Item> getItemsByCategory(String category) {
+        List<Item> list = new ArrayList<>();
+
+        String whereClause = "category like ?";
+        String[] whereArgs = {category};
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        Cursor cursor = database.query("items", null, whereClause, whereArgs, null, null, null);
+
+        while (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+//            String category = cursor.getString(2);
+            String price = cursor.getString(3);
+            String date = cursor.getString(4);
+
+            list.add(new Item(id, title, category, price, date));
+        }
+
+        return list;
+    }
+
+    public List<Item> getItemsByTimePeriod(String from, String to) {
+        List<Item> list = new ArrayList<>();
+
+        String whereClause = "date BETWEEN ? AND ?";
+        String[] whereArgs = {from.trim(), to.trim()};
+
+        SQLiteDatabase database = getReadableDatabase();
+
+        Cursor cursor = database.query("items", null, whereClause, whereArgs, null, null, null);
+
+        while (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String category = cursor.getString(2);
+            String price = cursor.getString(3);
+            String date = cursor.getString(4);
+
+            list.add(new Item(id, title, category, price, date));
+        }
+
+        return list;
+    }
 }
