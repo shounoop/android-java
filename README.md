@@ -4,7 +4,7 @@
 
 - **[Handling of touch events](https://github.com/shounoop/android-java/tree/main/lessions/handling-of-touch-events)**
 - **[Fragment](https://github.com/shounoop/android-java/tree/main/lessions/fragment)**
-- **[ViewPager & TabLayout](https://github.com/shounoop/android-java/tree/main/lessions/view-pager-vs-tab-layout)**
+- **[ViewPager & TabLayout](https://github.com/shounoop/android-java/tree/main/lessions/view-pager-vs-tab-layout-1)**
 - **[ViewPager & TabLayout & RecycleView](https://github.com/shounoop/android-java/tree/main/lessions/view-pager-vs-tab-layout-2)**
 
 ### Tests
