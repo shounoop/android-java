@@ -86,13 +86,9 @@ public class UpdateDeleteActivity extends AppCompatActivity implements View.OnCl
             DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateDeleteActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int yyyy, int mm, int dd) {
-                    String date = "";
-
-                    if (mm > 8) {
-                        date = dd + "/" + (mm + 1) + "/" + yyyy;
-                    } else {
-                        date = dd + "/0" + (mm + 1) + "/" + yyyy;
-                    }
+                    String day = dd > 9 ? dd + "" : "0" + dd;
+                    String month = mm > 8 ? (mm + 1) + "" : "0" + (mm + 1);
+                    String date = day + "/" + month + "/" + yyyy;
 
                     eDate.setText(date);
                 }

@@ -43,10 +43,10 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
 
         this.initView(view);
 
-//        List<Item> list = this.sqLiteHelper.getAll();
-//        this.reRender(list);
+        List<Item> list = this.sqLiteHelper.getAll();
+        this.reRender(list);
 
-//        this.catchEvent();
+        this.catchEvent();
     }
 
     private void reRender(List<Item> list) {

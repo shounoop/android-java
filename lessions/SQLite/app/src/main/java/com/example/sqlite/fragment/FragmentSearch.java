@@ -24,14 +24,18 @@ import com.example.sqlite.AddActivity;
 import com.example.sqlite.R;
 import com.example.sqlite.adapter.RecycleViewAdapter;
 import com.example.sqlite.dal.SQLiteHelper;
+import com.example.sqlite.model.Category;
 import com.example.sqlite.model.Item;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragmentSearch extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
-    private TextView tvTong;
+    private TextView tvTong, tvStatistic;
     private Button btSearch;
     private SearchView searchView;
     private EditText eFromDate, eToDate;
@@ -50,20 +54,60 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         this.initView(view);
+        this.handleStatistic();
 
-        this.adapter = new RecycleViewAdapter();
-        this.sqLiteHelper = new SQLiteHelper(getContext());
         List<Item> list = this.sqLiteHelper.getAll();
+        this.handleChangedData(list);
 
-        this.adapter.setList(list);
+        this.catchEvent();
+    }
 
-        tvTong.setText("Total money: " + getTotal(list) + "K");
+    private void initView(View view) {
+        this.recyclerView = view.findViewById(R.id.recycleView);
+        this.tvTong = view.findViewById(R.id.tvTong);
+        this.btSearch = view.findViewById(R.id.btSearch);
+        this.searchView = view.findViewById(R.id.search);
+        this.eFromDate = view.findViewById(R.id.eFrom);
+        this.eToDate = view.findViewById(R.id.eTo);
+        this.spCategory = view.findViewById(R.id.spCategory);
+        this.tvStatistic = view.findViewById(R.id.tvStat);
+
+        this.initRecycleView();
+        this.initSQLiteHelper();
+        this.initSpinner(this.spCategory, getResources().getStringArray(R.array.category));
+    }
+
+    private void handleStatistic() {
+        String[] strCategories = getResources().getStringArray(R.array.category);
+        List<Category> objCategories = new ArrayList<>();
+
+        for (int i = 0; i < strCategories.length; i++) {
+            List<Item> items = sqLiteHelper.getItemsByCategory(strCategories[i]);
+            objCategories.add(new Category(strCategories[i], items.size()));
+        }
+
+        Comparator<Category> byQuantityDesc = Comparator.comparing(Category::getQuantity).reversed();
+        Collections.sort(objCategories, byQuantityDesc);
+
+        String statistic = "";
+        for (Category category : objCategories) {
+            System.out.println(category.getName() + ": " + category.getQuantity());
+            statistic += category.getName() + ": " + category.getQuantity() + "; ";
+        }
+
+        this.tvStatistic.setText(statistic);
+    }
+
+    private void initSQLiteHelper() {
+        this.sqLiteHelper = new SQLiteHelper(getContext());
+    }
+
+    private void initRecycleView() {
+        this.adapter = new RecycleViewAdapter();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         this.recyclerView.setLayoutManager(linearLayoutManager);
         this.recyclerView.setAdapter(this.adapter);
-
-        this.catchEvent();
     }
 
     private void catchEvent() {
@@ -76,9 +120,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             @Override
             public boolean onQueryTextChange(String s) {
                 List<Item> list = sqLiteHelper.getItemsByTitle(s);
-
-                tvTong.setText("Total money: " + getTotal(list));
-                adapter.setList(list);
+                handleChangedData(list);
                 return true;
             }
         });
@@ -99,8 +141,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
                     list = sqLiteHelper.getAll();
                 }
 
-                adapter.setList(list);
-                tvTong.setText("Total money: " + getTotal(list));
+                handleChangedData(list);
             }
 
             @Override
@@ -120,16 +161,7 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
         return res;
     }
 
-    private void initView(View view) {
-        this.recyclerView = view.findViewById(R.id.recycleView);
-        this.tvTong = view.findViewById(R.id.tvTong);
-        this.btSearch = view.findViewById(R.id.btSearch);
-        this.searchView = view.findViewById(R.id.search);
-        this.eFromDate = view.findViewById(R.id.eFrom);
-        this.eToDate = view.findViewById(R.id.eTo);
-        this.spCategory = view.findViewById(R.id.spCategory);
-
-        String[] arr = getResources().getStringArray(R.array.category);
+    private void initSpinner(Spinner spinner, String[] arr) {
 
         String[] arr1 = new String[arr.length + 1];
         arr1[0] = "All";
@@ -137,8 +169,12 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             arr1[i + 1] = arr[i];
         }
 
-        this.spCategory.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.item_spinner, arr1));
+        spinner.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.item_spinner, arr1));
+    }
 
+    private void handleChangedData(List<Item> list) {
+        adapter.setList(list);
+        tvTong.setText("Total money: " + getTotal(list) + "K");
     }
 
     @Override
@@ -152,13 +188,9 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int yyyy, int mm, int dd) {
-                    String date = "";
-
-                    if (mm > 8) {
-                        date = dd + "/" + (mm + 1) + "/" + yyyy;
-                    } else {
-                        date = dd + "/0" + (mm + 1) + "/" + yyyy;
-                    }
+                    String day = dd > 9 ? dd + "" : "0" + dd;
+                    String month = mm > 8 ? (mm + 1) + "" : "0" + (mm + 1);
+                    String date = day + "/" + month + "/" + yyyy;
 
                     eFromDate.setText(date);
                 }
@@ -177,13 +209,9 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int yyyy, int mm, int dd) {
-                    String date = "";
-
-                    if (mm > 8) {
-                        date = dd + "/" + (mm + 1) + "/" + yyyy;
-                    } else {
-                        date = dd + "/0" + (mm + 1) + "/" + yyyy;
-                    }
+                    String day = dd > 9 ? dd + "" : "0" + dd;
+                    String month = mm > 8 ? (mm + 1) + "" : "0" + (mm + 1);
+                    String date = day + "/" + month + "/" + yyyy;
 
                     eToDate.setText(date);
                 }
@@ -199,8 +227,9 @@ public class FragmentSearch extends Fragment implements View.OnClickListener {
 
             if (!from.isEmpty() && !from.isEmpty()) {
                 List<Item> list = sqLiteHelper.getItemsByTimePeriod(from, to);
-                adapter.setList(list);
-                tvTong.setText("Total money: " + getTotal(list));
+                this.handleChangedData(list);
+                this.eFromDate.setText("");
+                this.eToDate.setText("");
             }
         }
     }
